@@ -7,74 +7,77 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
+model Project {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
+  subtitle    String
+  student     String
+  age         String
   description String
-  price       String?
-  discount    String
   img         String[]
+  video       String[]
+}
+
+model Course {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  level       String
+  duration    Json
+  age         Json
   category    String
   subcategory String?
-  brand       String?
-  isOut       String?
-  colors      Json?
-  sizes       Json?
-  names       Json?
-  stock       String?
-  points       String?
-  delivery    String
-  video       String[]
-  arrival     String   @default("no")
+  description String
+  img         String[]
+}
+
+model Blog {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  author      String
+  title       String
+  description String
+  img         String[]
+  date        DateTime @default(now()) @db.Date
+}
+
+model Team {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  position    String
+  category    String
+  description String
+  img         String[]
 }
 
 model Brand {
-  id   String   @id @default(auto()) @map("_id") @db.ObjectId
-  name String   @unique
+  id   String   @id @default(auto()) @map("_id") @db.ObjectId 
   img  String[]
 }
+
 model Category {
   id   String   @id @default(auto()) @map("_id") @db.ObjectId
-  name String   @unique
-  img  String[]
+  name String   @unique 
 }
 
 model Subcategory {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   name     String   @unique
-  category String
-  img      String[]
-}
-
-model Offer {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  code String
-  per  Int
-}
-
-model Order {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  userInfo  Json
-  cartItems Json
-  total     String
-  delivery  String
-  paid      Boolean @default(false)
-  num       String?
-  remark    String?
-  date      String
+  category String 
 }
 
 model Review {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  son        String
+  age        String
   description String
   stars       String
   date        DateTime @default(now()) @db.Date
 }
 
-model Color {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  code     String   @unique
-  category String
-  img      String[]
+
+
+model Faq {
+  id   String   @id @default(auto()) @map("_id") @db.ObjectId
+  question String  
+  answer String 
 }

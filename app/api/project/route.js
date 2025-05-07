@@ -6,48 +6,28 @@ export async function POST(req) {
   try {
     const body = await req.json();
     const {   
-      title,
-      description,
-      price,
-      discount,
-      img,
-      category,
-      subcategory,
-      colors,
-      sizes,
-      names,
-      stock,
-      arrival,
-      video,
-      delivery,
-      brand,
-      points,
-      isOut,
+      title       ,
+      subtitle    ,
+      student     ,
+      age         ,
+      description ,
+      img         ,
+      video       ,
       } = body;
 
 console.log("body are: ",body);
 
 
 
-    const product = await prisma.product.create({
+    const product = await prisma.project.create({
       data: {
-        title,
-        description,
-        price,
-        discount,
-        img,
-        category,
-        subcategory,
-        colors,
-        sizes,
-        names,
-        stock,
-        arrival,
-        video,
-        delivery,
-        brand,
-        points,
-        isOut,
+        title       ,
+        subtitle    ,
+        student     ,
+        age         ,
+        description ,
+        img         ,
+        video       ,
       },
     });
 
@@ -68,7 +48,7 @@ console.log("body are: ",body);
 
 export async function GET(req) {
   try {
-    const products = await prisma.product.findMany({
+    const products = await prisma.project.findMany({
       
     });
 

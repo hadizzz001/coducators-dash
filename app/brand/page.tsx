@@ -1,22 +1,18 @@
-
-
-
-
-
 'use client';
 
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect } from 'react';
 import Upload from '../components/Upload';
 import { redirect, useRouter } from 'next/navigation';
 
 const ManageCategory = () => {
-  const [formData, setFormData] = useState({ name: '' , img: [] });
-  const [editFormData, setEditFormData] = useState({ id: '', name: '', img: [] });
+  const [formData, setFormData] = useState({ img: [] });
+  const [editFormData, setEditFormData] = useState({ id: '', img: [] });
   const [message, setMessage] = useState('');
   const [categories, setCategories] = useState([]);
-  const [img, setImg] = useState([]); // Store images in an array
+  const [img, setImg] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const router = useRouter();
+
   // Fetch all categories
   const fetchCategories = async () => {
     try {
@@ -48,10 +44,9 @@ const ManageCategory = () => {
 
     if (res.ok) {
       setMessage('Brand added successfully!');
-      setFormData({ name: '',  img: [] });
+      setFormData({ img: [] });
       fetchCategories();
       window.location.href = '/brand';
-      
     } else {
       const errorData = await res.json();
       setMessage(`Error: ${errorData.error}`);
@@ -63,29 +58,24 @@ const ManageCategory = () => {
     setEditMode(true);
     setEditFormData({
       id: category.id,
-      name: category.name, 
       img: category.img,
     });
-    setImg(category.img); // Populate img state with existing images for editing
+    setImg(category.img);
   };
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const res = await fetch(`/api/brand?id=${encodeURIComponent(editFormData.id)}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: editFormData.name,
-          img: img, // Sends only the new image array
-        }),
+        body: JSON.stringify({ img }),
       });
-  
+
       if (res.ok) {
-        // Clear the edit form and image state
-        setEditFormData({ id: '', name: '', img: [] });
-        setImg([]); // Remove all old images from state
+        setEditFormData({ id: '', img: [] });
+        setImg([]);
         setEditMode(false);
         fetchCategories();
         window.location.reload();
@@ -99,7 +89,6 @@ const ManageCategory = () => {
       setMessage('An error occurred while updating the category.');
     }
   };
-  
 
   // Delete category
   const handleDelete = async (id) => {
@@ -124,11 +113,9 @@ const ManageCategory = () => {
 
   const handleImgChange = (uploadedUrls) => {
     if (uploadedUrls && uploadedUrls.length > 0) {
-      // Replace old images with new ones
       setImg(uploadedUrls);
     }
   };
-  
 
   useEffect(() => {
     if (!img.includes('')) {
@@ -140,22 +127,6 @@ const ManageCategory = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">{editMode ? 'Edit Brand' : 'Add Brand'}</h1>
       <form onSubmit={editMode ? handleEditSubmit : handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-1">Name</label>
-          <input
-            type="text"
-            className="border p-2 w-full"
-            value={editMode ? editFormData.name : formData.name}
-            onChange={(e) =>
-              editMode
-                ? setEditFormData({ ...editFormData, name: e.target.value })
-                : setFormData({ ...formData, name: e.target.value })
-            }
-            required
-          />
-        </div>
-       
-        
         <Upload onImagesUpload={handleImgChange} />
         <button type="submit" className="bg-blue-500 text-white px-4 py-2">
           {editMode ? 'Update Category' : 'Add Brand'}
@@ -163,11 +134,10 @@ const ManageCategory = () => {
       </form>
       {message && <p className="mt-4">{message}</p>}
 
-      <h2 className="text-xl font-bold mt-8">All Categories</h2>
+      <h2 className="text-xl font-bold mt-8">All Brands</h2>
       <table className="table-auto border-collapse border border-gray-300 w-full mt-4">
         <thead>
           <tr>
-            <th className="border border-gray-300 p-2">Name</th>
             <th className="border border-gray-300 p-2">Image</th>
             <th className="border border-gray-300 p-2">Actions</th>
           </tr>
@@ -176,8 +146,9 @@ const ManageCategory = () => {
           {categories.length > 0 ? (
             categories.map((category) => (
               <tr key={category.id}>
-                <td className="border border-gray-300 p-2">{category.name}</td>
-                <td className="border border-gray-300 p-2"><img src={`${category.img[0]}`}  alt="Product Image" className="w-24 h-auto" /></td>
+                <td className="border border-gray-300 p-2">
+                  <img src={`${category.img[0]}`} alt="Product Image" className="w-24 h-auto" />
+                </td>
                 <td className="border border-gray-300 p-2 text-center">
                   <button
                     onClick={() => handleEdit(category)}
@@ -196,7 +167,7 @@ const ManageCategory = () => {
             ))
           ) : (
             <tr>
-              <td  className="border border-gray-300 p-2 text-center">
+              <td className="border border-gray-300 p-2 text-center" colSpan={2}>
                 No brands found.
               </td>
             </tr>
@@ -204,11 +175,10 @@ const ManageCategory = () => {
         </tbody>
       </table>
       <style
-          dangerouslySetInnerHTML={{
-            __html:
-              "\n  .uploadcare--widget {\n    background:black;\n  }\n  ",
-          }}
-        />
+        dangerouslySetInnerHTML={{
+          __html: "\n  .uploadcare--widget {\n    background:black;\n  }\n  ",
+        }}
+      />
     </div>
   );
 };

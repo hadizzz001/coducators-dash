@@ -1,15 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Upload from '../components/Upload';
+import { useState, useEffect } from 'react'; 
 import { redirect } from 'next/navigation';
 
 const ManageCategory = () => {
-  const [formData, setFormData] = useState({ name: '' , img: [] });
-  const [editFormData, setEditFormData] = useState({ id: '', name: '', img: [] });
+  const [formData, setFormData] = useState({ name: ''  });
+  const [editFormData, setEditFormData] = useState({ id: '', name: '' });
   const [message, setMessage] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [img, setImg] = useState([]);  
+  const [categories, setCategories] = useState([]); 
   const [editMode, setEditMode] = useState(false);
  
   const fetchCategories = async () => {
@@ -44,7 +42,7 @@ const ManageCategory = () => {
 
     if (res.ok) {
       setMessage('category added successfully!');
-      setFormData({ name: '',  img: [] });
+      setFormData({ name: '' });
       fetchCategories();
       window.location.href = '/category';
       
@@ -58,10 +56,8 @@ const ManageCategory = () => {
     setEditMode(true);
     setEditFormData({
       id: category.id,
-      name: category.name, 
-      img: category.img,
-    });
-    setImg(category.img); // Populate img state with existing images for editing
+      name: category.name,  
+    }); 
   };
 
   const handleEditSubmit = async (e) => {
@@ -72,14 +68,13 @@ const ManageCategory = () => {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: editFormData.name, 
-          img: img, // Ensure the updated image state is sent
+          name: editFormData.name,  
         }),
       });
 
       if (res.ok) {
         window.location.reload(); 
-        setEditFormData({ id: '', name: '' , img: [] });
+        setEditFormData({ id: '', name: '' });
         setEditMode(false);
         fetchCategories();
         
@@ -115,17 +110,9 @@ const ManageCategory = () => {
     }
   };
 
-  const handleImgChange = (url) => {
-    if (url) {
-      setImg(url); 
-    }
-  };
+ 
 
-  useEffect(() => {
-    if (!img.includes('')) {
-      setFormData((prevState) => ({ ...prevState, img }));
-    }
-  }, [img]);
+ 
 
   return (
     <div className="container mx-auto p-4">
@@ -144,8 +131,7 @@ const ManageCategory = () => {
             }
             required
           />
-        </div> 
-        <Upload onImagesUpload={handleImgChange} />
+        </div>  
         <button type="submit" className="bg-blue-500 text-white px-4 py-2">
           {editMode ? 'Update Category' : 'Add category'}
         </button>
@@ -156,29 +142,17 @@ const ManageCategory = () => {
       <table className="table-auto border-collapse border border-gray-300 w-full mt-4">
   <thead>
     <tr>
-      <th className="border border-gray-300 p-2">Name</th>
-      <th className="border border-gray-300 p-2">Image</th>
+      <th className="border border-gray-300 p-2">Name</th> 
       <th className="border border-gray-300 p-2">Actions</th>
     </tr>
   </thead>
   <tbody>
     {categories.length > 0 ? (
-      categories.map((category) => {
-        const fileUrl = category.img[0];
-        const isVideo = /\.(mp4|webm|ogg)$/i.test(fileUrl);
+      categories.map((category) => { 
         return (
           <tr key={category.id}>
             <td className="border border-gray-300 p-2">{category.name}</td>
-            <td className="border border-gray-300 p-2">
-              {isVideo ? (
-                <video controls className="w-24 h-auto">
-                  <source src={fileUrl} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              ) : (
-                <img src={fileUrl} alt="Product Image" className="w-24 h-auto" />
-              )}
-            </td>
+             
             <td className="border border-gray-300 p-2 text-center">
               <button
                 onClick={() => handleEdit(category)}

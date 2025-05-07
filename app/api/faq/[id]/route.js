@@ -6,51 +6,20 @@ const prisma = new PrismaClient();
 export async function PATCH(request, { params }) {
   const { id } = params;
   const {
-    title,
-    description,
-    price,
-    discount,
-    img,
-    category,
-    subcategory,
-    colors,
-    sizes,
-    names,
-    stock,
-    arrival,
-    video,
-    delivery,
-    brand,
-    points,
-    isOut,
+    question ,  
+    answer , 
      
   } = await request.json();
-
-  console.log("imgs are: ", img);
+ 
   
 
   try {
     // Update product and its specifications
-    const updatedProduct = await prisma.product.update({
+    const updatedProduct = await prisma.faq.update({
       where: { id },
       data: {
-        title,
-        description,
-        price,
-        discount,
-        img,
-        category,
-        subcategory,
-        colors,
-        sizes,
-        names,
-        stock,
-        arrival,
-        video,
-        delivery,
-        brand,
-        points,
-        isOut,
+        question ,  
+        answer , 
       },
     });
 
@@ -72,7 +41,7 @@ export async function DELETE(request, { params }) {
  
 
     // Delete the product
-    await prisma.product.delete({
+    await prisma.faq.delete({
       where: { id },
     });
 

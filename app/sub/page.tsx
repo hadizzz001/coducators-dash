@@ -1,17 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { redirect } from 'next/navigation';
-import Upload from '../components/Upload';
+import { redirect } from 'next/navigation'; 
 
 const ManageCategory = () => {
-  const [formData, setFormData] = useState({ name: '', category: '', img: [] });
-  const [editFormData, setEditFormData] = useState({ id: '', name: '', category: '', img: [] });
+  const [formData, setFormData] = useState({ name: '', category: '' });
+  const [editFormData, setEditFormData] = useState({ id: '', name: '', category: '' });
   const [message, setMessage] = useState('');
   const [subCategories, setSubCategories] = useState([]);
   const [mainCategories, setMainCategories] = useState([]);
-  const [editMode, setEditMode] = useState(false);
-  const [img, setImg] = useState([]);
+  const [editMode, setEditMode] = useState(false); 
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -49,7 +47,7 @@ const ManageCategory = () => {
 
     if (res.ok) {
       setMessage('Added successfully!');
-      setFormData({ name: '', category: '', img: [] });
+      setFormData({ name: '', category: '' });
       window.location.href = '/sub';
     } else {
       const errorData = await res.json();
@@ -62,10 +60,8 @@ const ManageCategory = () => {
     setEditFormData({
       id: category.id,
       name: category.name,
-      category: category.category,
-      img: category.img,
-    });
-    setImg(category.img);
+      category: category.category, 
+    }); 
   };
 
   const handleEditSubmit = async (e) => {
@@ -77,14 +73,13 @@ const ManageCategory = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: editFormData.name,
-          category: editFormData.category,
-          img: img,
+          category: editFormData.category, 
         }),
       });
 
       if (res.ok) {
         window.location.reload();
-        setEditFormData({ id: '', name: '', category: '', img: [] });
+        setEditFormData({ id: '', name: '', category: '' });
         setEditMode(false);
       } else {
         const errorData = await res.json();
@@ -116,17 +111,7 @@ const ManageCategory = () => {
   };
 
 
-  const handleImgChange = (url) => {
-    if (url) {
-      setImg(url); 
-    }
-  };
-
-  useEffect(() => {
-    if (!img.includes('')) {
-      setFormData((prevState) => ({ ...prevState, img }));
-    }
-  }, [img]);
+ 
 
   return (
     <div className="container mx-auto p-4">
@@ -166,8 +151,7 @@ const ManageCategory = () => {
               </option>
             ))}
           </select>
-        </div>
-        <Upload onImagesUpload={handleImgChange} />
+        </div> 
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
           {editMode ? 'Update' : 'Add'}
         </button>
@@ -180,29 +164,17 @@ const ManageCategory = () => {
         <thead>
           <tr>
             <th className="border border-gray-300 p-2">Name</th>
-            <th className="border border-gray-300 p-2">Category</th>
-            <th className="border border-gray-300 p-2">Image</th>
+            <th className="border border-gray-300 p-2">Category</th> 
             <th className="border border-gray-300 p-2">Actions</th>
           </tr>
         </thead>
         <tbody>
           {subCategories.length > 0 ? (
-            subCategories.map((category) => {
-              const fileUrl = category.img[0];
-              const isVideo = /\.(mp4|webm|ogg)$/i.test(fileUrl);
+            subCategories.map((category) => { 
               return (
                 <tr key={category.id}>
-                  <td className="border border-gray-300 p-2">{category.name}</td>
-                  <td className="border border-gray-300 p-2">
-                    {isVideo ? (
-                      <video controls className="w-24 h-auto">
-                        <source src={fileUrl} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                    ) : (
-                      <img src={fileUrl} alt="Product Image" className="w-24 h-auto" />
-                    )}
-                  </td>
+                  <td className="border border-gray-300 p-2">{category.name}</td> 
+                  <td className="border border-gray-300 p-2">{category.category}</td> 
                   <td className="border border-gray-300 p-2 text-center">
                     <button
                       onClick={() => handleEdit(category)}

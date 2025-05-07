@@ -19,7 +19,7 @@ export default function Sidebar() {
           color: "white",
           height: "100vh",
           position: "fixed",
-          width: isOpen ? "200px" : "0",
+          width: isOpen ? "250px" : "0",
           left: isOpen ? "0" : "-200px",
           overflow: "hidden",
           transition: "left 0.3s ease-in-out",
@@ -30,38 +30,53 @@ export default function Sidebar() {
           <h3 style={{ textAlign: "center" }}>Dashboard</h3>
           <ul style={{ padding: 0, marginTop: "20px", listStyle: "none" }}>
             <li style={{ marginBottom: "15px" }}>
-              <a href="/dashboard" style={{ color: "white", textDecoration: "none" }}>
-                All Products
+              <a href="/dashboard" style={{ color: "white", textDecoration: "none", whiteSpace: "nowrap" }}>
+                All Courses
               </a>
             </li>
             <li>
-              <a href="/products" style={{ color: "white", textDecoration: "none" }}>
-                Add Product
+              <a href="/products" style={{ color: "white", textDecoration: "none", whiteSpace: "nowrap" }}>
+                Add Courses
               </a>
             </li>
             <li>
-              <a href="/category" style={{ color: "white", textDecoration: "none" }}>
-                Add Category
+              <a href="/category" style={{ color: "white", textDecoration: "none" , whiteSpace: "nowrap" }}>
+                Add Courses Category
               </a>
             </li>    
             <li>
-              <a href="/sub" style={{ color: "white", textDecoration: "none" }}>
-                Add Subcategory
+              <a href="/sub" style={{ color: "white", textDecoration: "none" , whiteSpace: "nowrap"}}>
+                Add Courses Subcategory
               </a>
             </li>    
             <li>
-              <a href="/color" style={{ color: "white", textDecoration: "none" }}>
-                Add Color
+              <a href="/project" style={{ color: "white", textDecoration: "none", whiteSpace: "nowrap" }}>
+                Projects
               </a>
             </li>  
             <li>
-              <a href="/brand" style={{ color: "white", textDecoration: "none" }}>
+              <a href="/blog" style={{ color: "white", textDecoration: "none", whiteSpace: "nowrap" }}>
+                Blogs
+              </a>
+            </li>  
+            <li>
+              <a href="/team" style={{ color: "white", textDecoration: "none", whiteSpace: "nowrap" }}>
+                Teams
+              </a>
+            </li>  
+            <li>
+              <a href="/faq" style={{ color: "white", textDecoration: "none", whiteSpace: "nowrap" }}>
+                FAQ
+              </a>
+            </li>  
+            <li>
+              <a href="/brand" style={{ color: "white", textDecoration: "none" , whiteSpace: "nowrap"}}>
                 Brands
               </a>
             </li>  
             <li>
-              <a href="/reservation" style={{ color: "white", textDecoration: "none" }}>
-                Orders
+              <a href="/reservation" style={{ color: "white", textDecoration: "none" , whiteSpace: "nowrap"}}>
+                Reservations
               </a>
             </li> 
             <li>

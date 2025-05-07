@@ -4,150 +4,159 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import Upload from '../components/Upload';
-import Upload1 from '../components/Upload1'; // For videos
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-export default function AddProduct() {
+export default function AddCourse() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [points, setPts] = useState('');
-  const [discount, setDiscount] = useState('');
+  const [level, setLevel] = useState('');
+  const [duration, setDuration] = useState({ number: '', unit: 'days' });
+  const [age, setAge] = useState({ from: '', to: '' });
   const [img, setImg] = useState(['']);
-  const [video, setVideo] = useState(['']);
-  const [delivery, setDelivery] = useState('');
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [allSubCategories, setAllSubCategories] = useState([]);
   const [filteredSubCategories, setFilteredSubCategories] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState('');
-  const [isNewArrival, setIsNewArrival] = useState(false);
-  const [isOut, setIsOut] = useState(false);
-  const [sizeList, setSizeList] = useState([{ size: '', price: '' }]);
-  const [nameList, setNameList] = useState(['']);
-  const [brands, setBrands] = useState([]);
-  const [selectedBrand, setSelectedBrand] = useState('');
-  const [showPrice, setShowPrice] = useState('with');
-  const [optionType, setOptionType] = useState("size");
-
-
-  useEffect(() => {
-    fetch('/api/brand')
-      .then((res) => res.json())
-      .then(setBrands)
-      .catch(console.error);
-  }, []);
-
 
   useEffect(() => {
     fetch('/api/category')
-      .then((res) => res.json())
-      .then(setCategoryOptions)
-      .catch(console.error);
-  }, []);
+      .then(res => res.json())
+      .then(setCategoryOptions);
 
-  useEffect(() => {
     fetch('/api/sub')
-      .then((res) => res.json())
-      .then(setAllSubCategories)
-      .catch(console.error);
+      .then(res => res.json())
+      .then(setAllSubCategories);
   }, []);
 
   useEffect(() => {
-    const filtered = allSubCategories?.filter(
+    const filtered = allSubCategories.filter(
       (sub) => sub.category === selectedCategory
     );
     setFilteredSubCategories(filtered);
     setSelectedSubCategory('');
   }, [selectedCategory, allSubCategories]);
 
-
-
-  const handleImgChange = (url) => {
-    if (url) setImg(url);
-  };
-
-  const handleVideoChange = (url) => {
-    if (url) setVideo(url);
-  };
-
-  const handleAddSize = () => {
-    setSizeList([...sizeList, { size: '', price: '' }]);
-  };
-
-
-  const handleAddName = () => {
-    setNameList([...nameList, '']);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (img.length === 1 && img[0] === '') {
-      alert('Please choose at least 1 image');
+    if (!img || img.length === 0 || !img[0]) {
+      alert('Please upload at least one image');
       return;
     }
 
     const payload = {
       title,
       description,
-      price,
-      points,
-      discount,
+      level,
+      duration: JSON.stringify(duration),
+      age: JSON.stringify(age),
       img,
-      video,
-      delivery: delivery + "",
       category: selectedCategory,
       subcategory: selectedSubCategory,
-      brand: selectedBrand,
-      sizes: sizeList,
-      names: nameList, 
-      ...(isNewArrival && { arrival: 'yes' }), 
-      ...(isOut && { isOut: 'yes' }), 
     };
 
-    const res = await fetch('/api/products', {
+    const res = await fetch('/api/course', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
 
     if (res.ok) {
-      alert('Product added successfully!');
+      alert('Course added successfully!');
       window.location.href = '/dashboard';
     } else {
-      alert('Failed to add product');
+      alert('Failed to add course');
     }
   };
- 
-  
-  
 
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl mx-auto p-4">
-      <h1 className="text-xl font-bold mb-4">Add New Product</h1>
+      <h1 className="text-xl font-bold mb-4">Add New Course</h1>
 
       <input
         type="text"
-        placeholder="Title"
+        placeholder="Course Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className="w-full border p-2 mb-4"
         required
       />
 
+      {/* Level Dropdown */}
+      <label className="block font-bold mb-1">Course Level</label>
+      <select
+        value={level}
+        onChange={(e) => setLevel(e.target.value)}
+        className="w-full border p-2 mb-4"
+        required
+      >
+        <option value="">Select level</option>
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="high intermediate">High Intermediate</option>
+        <option value="advanced">Advanced</option>
+      </select>
 
+      {/* Duration Input */}
+      <div className="flex gap-2 mb-4">
+        <input
+          type="number"
+          placeholder="Duration"
+          value={duration.number}
+          onChange={(e) =>
+            setDuration((prev) => ({ ...prev, number: e.target.value }))
+          }
+          className="w-full border p-2"
+          required
+        />
+        <select
+          value={duration.unit}
+          onChange={(e) =>
+            setDuration((prev) => ({ ...prev, unit: e.target.value }))
+          }
+          className="border p-2"
+        >
+          <option value="days">Days</option>
+          <option value="weeks">Weeks</option>
+          <option value="months">Months</option>
+        </select>
+      </div>
+
+      {/* Age From / To Inputs */}
+      <div className="flex gap-2 mb-4">
+        <input
+          type="number"
+          placeholder="Age From"
+          value={age.from}
+          onChange={(e) =>
+            setAge((prev) => ({ ...prev, from: e.target.value }))
+          }
+          className="w-full border p-2"
+          required
+        />
+        <input
+          type="number"
+          placeholder="Age To"
+          value={age.to}
+          onChange={(e) =>
+            setAge((prev) => ({ ...prev, to: e.target.value }))
+          }
+          className="w-full border p-2"
+          required
+        />
+      </div>
 
       {/* Category */}
-      <label className="block font-bold">Category</label>
+      <label className="block font-bold mb-1">Category</label>
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}
         className="w-full border p-2 mb-4"
         required
       >
-        <option value="" disabled>Select a category</option>
+        <option value="">Select a category</option>
         {categoryOptions.map((cat) => (
           <option key={cat.id} value={cat.name}>{cat.name}</option>
         ))}
@@ -156,13 +165,13 @@ export default function AddProduct() {
       {/* Subcategory */}
       {filteredSubCategories.length > 0 && (
         <>
-          <label className="block font-bold">Subcategory</label>
+          <label className="block font-bold mb-1">Subcategory</label>
           <select
             value={selectedSubCategory}
             onChange={(e) => setSelectedSubCategory(e.target.value)}
             className="w-full border p-2 mb-4"
           >
-            <option value="" disabled>Select a subcategory</option>
+            <option value="">Select a subcategory</option>
             {filteredSubCategories.map((sub) => (
               <option key={sub.id} value={sub.name}>{sub.name}</option>
             ))}
@@ -170,225 +179,22 @@ export default function AddProduct() {
         </>
       )}
 
-
-      <label className="block font-bold">Brand</label>
-      <select
-        value={selectedBrand}
-        onChange={(e) => setSelectedBrand(e.target.value)}
-        className="w-full border p-2 mb-4"
-
-      >
-        <option value="" disabled>Select a brand</option>
-        {brands.map((b, i) => (
-          <option key={i} value={b.name}>{b.name}</option>
-        ))}
-      </select>
-
-
-      <div>
-        <div className="mb-4">
-          <label className="mr-4">
-            <input
-              type="radio"
-              name="priceToggle"
-              value="with"
-              checked={showPrice === 'with'}
-              onChange={() => setShowPrice('with')}
-              className="mr-1"
-            />
-            With Discount
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="priceToggle"
-              value="without"
-              checked={showPrice === 'without'}
-              onChange={() => setShowPrice('without')}
-              className="mr-1"
-            />
-            Without Discount
-          </label>
-        </div>
-
-        {showPrice === 'with' && (
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Price Before"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="w-full border p-2 mb-4"
-          />
-        )}
-      </div>
-
-      <input
-        type="number"
-        step="0.01"
-        placeholder="Final Price"
-        value={discount}
-        onChange={(e) => setDiscount(e.target.value)}
-        className="w-full border p-2 mb-4"
-        required
-      />
-
-      <input
-        type="number"
-        placeholder="Delivery price"
-        value={delivery}
-        onChange={(e) => setDelivery(e.target.value)}
-        className="w-full border p-2 mb-4"
-        required
-      />
-
-      <input
-        type="number"
-        placeholder="Points"
-        value={points}
-        onChange={(e) => setPts(e.target.value)}
-        className="w-full border p-2 mb-4"
-        required
-      />
-
-
-
-
-<div>
-    {/* Radio Button Toggle */}
-    <div className="mb-4">
-      <label className="font-bold block mb-2">Select Option Type</label>
-      <label className="mr-4">
-        <input
-          type="radio"
-          name="optionType"
-          value="size"
-          checked={optionType === "size"}
-          onChange={() => setOptionType("size")}
-          className="mr-1"
-        />
-        Size
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="optionType"
-          value="name"
-          checked={optionType === "name"}
-          onChange={() => setOptionType("name")}
-          className="mr-1"
-        />
-        Name
-      </label>
-    </div>
-
-    {/* Sizes & Prices (shown only if 'size' is selected) */}
-    {optionType === "size" && (
-      <div className="mb-4">
-        <label className="font-bold block">Sizes & Prices</label>
-        {sizeList.map((entry, idx) => (
-          <div key={idx} className="flex gap-2 mb-2">
-            <input
-              type="text"
-              placeholder={`Size ${idx + 1}`}
-              value={entry.size}
-              onChange={(e) => {
-                const updated = [...sizeList];
-                updated[idx].size = e.target.value;
-                setSizeList(updated);
-              }}
-              className="w-1/2 border p-2"
-            />
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Price"
-              value={entry.price}
-              onChange={(e) => {
-                const updated = [...sizeList];
-                updated[idx].price = e.target.value;
-                setSizeList(updated);
-              }}
-              className="w-1/2 border p-2"
-            />
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={handleAddSize}
-          className="text-blue-500"
-        >
-          + Add Size
-        </button>
-      </div>
-    )}
-
-    {/* Names (shown only if 'name' is selected) */}
-    {optionType === "name" && (
-      <div className="mb-4">
-        <label className="font-bold block">Names</label>
-        {nameList.map((name, idx) => (
-          <input
-            key={idx}
-            type="text"
-            placeholder={`Name ${idx + 1}`}
-            value={name}
-            onChange={(e) => {
-              const updated = [...nameList];
-              updated[idx] = e.target.value;
-              setNameList(updated);
-            }}
-            className="w-full border p-2 mb-2"
-          />
-        ))}
-        <button
-          type="button"
-          onClick={handleAddName}
-          className="text-blue-500"
-        >
-          + Add Name
-        </button>
-      </div>
-    )}
-  </div> 
-
-      <label className="block text-lg font-bold mb-2">Description</label>
+      {/* Description Editor */}
+      <label className="block font-bold mb-1">Description</label>
       <ReactQuill
         value={description}
         onChange={setDescription}
         className="mb-4"
         theme="snow"
-        placeholder="Write your product description here..."
+        placeholder="Write course description here..."
       />
 
-      <Upload onImagesUpload={handleImgChange} />
+      {/* Image Upload */}
+      <label className="block font-bold mb-1">Course Image</label>
+      <Upload onImagesUpload={(url) => setImg(url)} />
 
-      <Upload1 onFilesUpload={handleVideoChange} />
-
-      <div className="flex items-center my-4">
-        <input
-          type="checkbox"
-          id="newArrival"
-          checked={isNewArrival}
-          onChange={(e) => setIsNewArrival(e.target.checked)}
-          className="mr-2"
-        />
-        <label htmlFor="newArrival" className="text-lg font-bold">Best Seller</label>
-      </div>
-
-      <div className="flex items-center my-4">
-        <input
-          type="checkbox"
-          id="isOut"
-          checked={isOut}
-          onChange={(e) => setIsOut(e.target.checked)}
-          className="mr-2"
-        />
-        <label htmlFor="isOut" className="text-lg font-bold">Out of Stock</label>
-      </div>
-
-      <button type="submit" className="bg-green-500 text-white px-4 py-2">
-        Save Product
+      <button type="submit" className="bg-green-600 text-white px-4 py-2 mt-6">
+        Save Course
       </button>
     </form>
   );
