@@ -73,12 +73,7 @@ export default function Sidebar() {
               <a href="/brand" style={{ color: "white", textDecoration: "none" , whiteSpace: "nowrap"}}>
                 Brands
               </a>
-            </li>  
-            <li>
-              <a href="/reservation" style={{ color: "white", textDecoration: "none" , whiteSpace: "nowrap"}}>
-                Reservations
-              </a>
-            </li> 
+            </li>   
             <li>
               <a href="/" style={{ color: "white", textDecoration: "none" }}>
                 Logout

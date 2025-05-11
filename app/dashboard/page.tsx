@@ -106,6 +106,7 @@ export default function CourseTable() {
             <th className="border p-2">Image</th>
             <th className="border p-2">Category</th>
             <th className="border p-2">Subcategory</th>
+            <th className="border p-2">Starts Soon</th>
             <th className="border p-2">Actions</th>
           </tr>
         </thead>
@@ -125,6 +126,7 @@ export default function CourseTable() {
       </td>
       <td className="border p-2">{c.category}</td>
       <td className="border p-2">{c.subcategory}</td>
+      <td className="border p-2">{c.soon}</td>
       <td className="border p-2">
         <button
           onClick={() => handleEdit(c)}
@@ -160,6 +162,8 @@ function EditCourseForm({ course, onCancel, onSave }) {
   const [img, setImg] = useState(course.img || []);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [soon, setSoon] = useState(course.soon);
+
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -175,17 +179,19 @@ function EditCourseForm({ course, onCancel, onSave }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = {
-      ...course,
-      title,
-      level,
-      duration: JSON.stringify(duration),
-      age: JSON.stringify(age),
-      category,
-      subcategory,
-      description,
-      img,
-    };
+const payload = {
+  ...course,
+  title,
+  level,
+  duration: JSON.stringify(duration),
+  age: JSON.stringify(age),
+  category,
+  subcategory,
+  description,
+  img,
+  soon,
+};
+
     onSave(payload);
   };
 
@@ -288,6 +294,17 @@ function EditCourseForm({ course, onCancel, onSave }) {
       )}
 
       <ReactQuill value={description} onChange={setDescription} className="mb-4" theme="snow" />
+
+<label className="flex items-center gap-2 mb-4">
+  <input
+    type="checkbox"
+    checked={soon === 'yes'}
+    onChange={(e) => setSoon(e.target.checked ? 'yes' : 'no')}
+    className="h-4 w-4"
+  />
+  <span className="text-sm font-medium">Start Soon</span>
+</label>
+
 
       <Upload onImagesUpload={(urls) => setImg(urls)} />
 

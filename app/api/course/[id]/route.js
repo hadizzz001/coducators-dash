@@ -14,6 +14,7 @@ export async function PATCH(request, { params }) {
     subcategory ,
     description ,
     img         ,
+    soon,
      
   } = await request.json();
 
@@ -33,6 +34,7 @@ export async function PATCH(request, { params }) {
         subcategory ,
         description ,
         img         ,
+        soon         ,
       },
     });
 

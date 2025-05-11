@@ -28,6 +28,7 @@ model Course {
   subcategory String?
   description String
   img         String[]
+  soon        String? @default("no")
 }
 
 model Blog {
@@ -49,35 +50,33 @@ model Team {
 }
 
 model Brand {
-  id   String   @id @default(auto()) @map("_id") @db.ObjectId 
-  img  String[]
+  id  String   @id @default(auto()) @map("_id") @db.ObjectId
+  img String[]
 }
 
 model Category {
-  id   String   @id @default(auto()) @map("_id") @db.ObjectId
-  name String   @unique 
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
 }
 
 model Subcategory {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  name     String   @unique
-  category String 
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String @unique
+  category String
 }
 
 model Review {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  son        String
-  age        String
+  son         String
+  age         String
   description String
   stars       String
   date        DateTime @default(now()) @db.Date
 }
 
-
-
 model Faq {
-  id   String   @id @default(auto()) @map("_id") @db.ObjectId
-  question String  
-  answer String 
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  question String
+  answer   String
 }

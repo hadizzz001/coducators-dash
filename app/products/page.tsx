@@ -19,6 +19,8 @@ export default function AddCourse() {
   const [allSubCategories, setAllSubCategories] = useState([]);
   const [filteredSubCategories, setFilteredSubCategories] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState('');
+  const [soon, setSoon] = useState('no');
+
 
   useEffect(() => {
     fetch('/api/category')
@@ -55,7 +57,9 @@ export default function AddCourse() {
       img,
       category: selectedCategory,
       subcategory: selectedSubCategory,
+      soon, // now a string: "yes" or "no"
     };
+
 
     const res = await fetch('/api/course', {
       method: 'POST',
@@ -70,6 +74,12 @@ export default function AddCourse() {
       alert('Failed to add course');
     }
   };
+
+
+  useEffect(() => {
+    console.log("soon", soon);
+    
+  }, [soon]);
 
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl mx-auto p-4">
@@ -188,6 +198,18 @@ export default function AddCourse() {
         theme="snow"
         placeholder="Write course description here..."
       />
+
+      <label className="flex items-center gap-2 mb-4">
+        <input
+          type="checkbox"
+          checked={soon === 'yes'}
+          onChange={(e) => setSoon(e.target.checked ? 'yes' : 'no')}
+          className="h-4 w-4"
+        />
+        <span className="text-sm font-medium">Start Soon</span>
+      </label>
+
+
 
       {/* Image Upload */}
       <label className="block font-bold mb-1">Course Image</label>

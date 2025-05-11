@@ -14,6 +14,7 @@ export async function POST(req) {
       subcategory ,
       description ,
       img         ,
+      soon,
       } = body;
 
 console.log("body are: ",body);
@@ -30,6 +31,7 @@ console.log("body are: ",body);
         subcategory ,
         description ,
         img         ,
+        soon,
       },
     });
 
