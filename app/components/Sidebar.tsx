@@ -50,6 +50,11 @@ export default function Sidebar() {
               </a>
             </li>    
             <li>
+              <a href="/banner" style={{ color: "white", textDecoration: "none", whiteSpace: "nowrap" }}>
+                Home Banner
+              </a>
+            </li>  
+            <li>
               <a href="/project" style={{ color: "white", textDecoration: "none", whiteSpace: "nowrap" }}>
                 Projects
               </a>
@@ -72,6 +77,16 @@ export default function Sidebar() {
             <li>
               <a href="/brand" style={{ color: "white", textDecoration: "none" , whiteSpace: "nowrap"}}>
                 Brands
+              </a>
+            </li>   
+            <li>
+              <a href="/work" style={{ color: "white", textDecoration: "none" , whiteSpace: "nowrap"}}>
+                Work Applicants
+              </a>
+            </li>   
+            <li>
+              <a href="/coll" style={{ color: "white", textDecoration: "none" , whiteSpace: "nowrap"}}>
+                Collaborations Data
               </a>
             </li>   
             <li>
