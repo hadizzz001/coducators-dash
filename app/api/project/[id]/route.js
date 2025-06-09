@@ -13,6 +13,7 @@ export async function PATCH(request, { params }) {
     description ,
     img         ,
     video       ,
+    course       ,
      
   } = await request.json();
 
@@ -31,6 +32,7 @@ export async function PATCH(request, { params }) {
         description ,
         img         ,
         video       ,
+        course       ,
       },
     });
 

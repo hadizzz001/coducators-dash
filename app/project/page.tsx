@@ -17,6 +17,7 @@ const ManageProject = () => {
     description: '',
     img: '',
     video: '',
+    course: '',
   });
 
   const [editFormData, setEditFormData] = useState({
@@ -28,11 +29,33 @@ const ManageProject = () => {
     description: '',
     img: '',
     video: '',
+    course: '',
   });
 
   const [message, setMessage] = useState('');
   const [projects, setProjects] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [courses, setCourses] = useState([]);
+
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await fetch('/api/course');
+        if (res.ok) {
+          const data = await res.json();
+          setCourses(data);
+        } else {
+          console.error('Failed to fetch courses');
+        }
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
 
   const fetchProjects = async () => {
     try {
@@ -70,6 +93,7 @@ const ManageProject = () => {
         description: '',
         img: '',
         video: '',
+        course: '',
       });
       window.location.href = '/project';
     } else {
@@ -104,6 +128,7 @@ const ManageProject = () => {
           description: '',
           img: '',
           video: '',
+          course: '',
         });
         window.location.href = '/project';
       } else {
@@ -159,6 +184,25 @@ const ManageProject = () => {
         ))}
 
         <div>
+          <label className="block mb-1">Select Course</label>
+          <select
+            className="border p-2 w-full"
+            value={currentForm.course}
+            onChange={(e) => updateField('course', e.target.value)}
+            required
+          >
+            <option value="">Select a course</option>
+            {courses.map((course) => (
+              <option key={course.id || course._id} value={course.title}>
+                {course.title}
+              </option>
+            ))}
+          </select>
+        </div>
+
+
+
+        <div>
           <label className="block mb-1">Description</label>
           <ReactQuill value={currentForm.description} onChange={(val) => updateField('description', val)} />
         </div>
@@ -166,12 +210,12 @@ const ManageProject = () => {
         <div>
           <label className="block mb-1">Upload Image</label>
           <Upload onImagesUpload={(url) => updateField('img', url)} />
-          
+
         </div>
 
         <div>
           <label className="block mb-1">Upload Video</label>
-          <Upload1 onFilesUpload={(url) => updateField('video', url)} /> 
+          <Upload1 onFilesUpload={(url) => updateField('video', url)} />
         </div>
 
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">

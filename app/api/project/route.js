@@ -13,6 +13,7 @@ export async function POST(req) {
       description ,
       img         ,
       video       ,
+      course       ,
       } = body;
 
 console.log("body are: ",body);
@@ -28,6 +29,7 @@ console.log("body are: ",body);
         description ,
         img         ,
         video       ,
+        course       ,
       },
     });
 
@@ -59,6 +61,27 @@ export async function GET(req) {
   } catch (error) {
     console.error('Error fetching products:', error);
     return new Response(JSON.stringify({ error: 'Failed to fetch products' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+}
+
+
+
+export async function PATCH(req) {
+  try {
+    const updated = await prisma.project.updateMany({
+      data: { course: 'Course 2' },
+    });
+
+    return new Response(JSON.stringify({ message: 'Course updated for all projects', updated }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error) {
+    console.error('Error updating course for all projects:', error);
+    return new Response(JSON.stringify({ error: 'Failed to update course for all projects' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
