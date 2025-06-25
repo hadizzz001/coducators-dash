@@ -6,35 +6,43 @@ const prisma = new PrismaClient();
 export async function PATCH(request, { params }) {
   const { id } = params;
   const {
-    title       ,
-    level       ,
-    duration    ,
-    age         ,
-    category    ,
-    subcategory ,
-    description ,
-    img         ,
+    title,
+    level,
+    duration,
+    age,
+    category,
+    subcategory,
+    description,
+    img,
     soon,
-     
+    sessions,
+    pair,
+    group,
+    pre,
+
   } = await request.json();
 
   console.log("imgs are: ", img);
-  
+
 
   try {
     // Update product and its specifications
     const updatedProduct = await prisma.course.update({
       where: { id },
       data: {
-        title       ,
-        level       ,
-        duration    ,
-        age         ,
-        category    ,
-        subcategory ,
-        description ,
-        img         ,
-        soon         ,
+        title,
+        level,
+        duration,
+        age,
+        category,
+        subcategory,
+        description,
+        img,
+        soon, sessions,
+        pair,
+        group,
+        pre,
+
       },
     });
 
@@ -53,7 +61,7 @@ export async function DELETE(request, { params }) {
   const { id } = params;
 
   try {
- 
+
 
     // Delete the product
     await prisma.course.delete({

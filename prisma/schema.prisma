@@ -11,9 +11,10 @@ model Project {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   subtitle    String
-  course    String
+  course      String
   student     String
   age         String
+  game        String?
   description String
   img         String[]
   video       String[]
@@ -26,10 +27,14 @@ model Course {
   duration    Json
   age         Json
   category    String
+  sessions    String?
+  pair        String?
+  group       String?
+  pre         String?
   subcategory String?
   description String
   img         String[]
-  soon        String? @default("no")
+  soon        String?  @default("no")
 }
 
 model Blog {
@@ -83,23 +88,21 @@ model Faq {
 }
 
 model Coll {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
   data Json
 }
 
 model Work {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
   data Json
 }
 
-
-
 model Banner {
-  id  String   @id @default(auto()) @map("_id") @db.ObjectId
-  img String[]
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  img   String[]
   title String
-  sub String
-  desc String
-  btn1 String
-  btn2 String
+  sub   String
+  desc  String
+  btn1  String
+  btn2  String
 }

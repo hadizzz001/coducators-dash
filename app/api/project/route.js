@@ -14,6 +14,7 @@ export async function POST(req) {
       img         ,
       video       ,
       course       ,
+      game       ,
       } = body;
 
 console.log("body are: ",body);
@@ -30,6 +31,7 @@ console.log("body are: ",body);
         img         ,
         video       ,
         course       ,
+        game       ,
       },
     });
 
@@ -83,7 +85,7 @@ export async function PATCH(req) {
     console.error('Error updating course for all projects:', error);
     return new Response(JSON.stringify({ error: 'Failed to update course for all projects' }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json' },
     });
   }
 }

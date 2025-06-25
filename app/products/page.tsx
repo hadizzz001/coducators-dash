@@ -21,6 +21,14 @@ export default function AddCourse() {
   const [selectedSubCategory, setSelectedSubCategory] = useState('');
   const [soon, setSoon] = useState('no');
 
+  // New fields
+  const [sessions, setSessions] = useState('');
+  const [pair, setPair] = useState('');
+  const [group, setGroup] = useState('');
+  const [pre, setPre] = useState('');
+
+  // Paired courses from /api/products
+  const [pairCourses, setPairCourses] = useState([]);
 
   useEffect(() => {
     fetch('/api/category')
@@ -30,6 +38,10 @@ export default function AddCourse() {
     fetch('/api/sub')
       .then(res => res.json())
       .then(setAllSubCategories);
+
+    fetch('/api/products')
+      .then(res => res.json())
+      .then(setPairCourses);
   }, []);
 
   useEffect(() => {
@@ -57,9 +69,12 @@ export default function AddCourse() {
       img,
       category: selectedCategory,
       subcategory: selectedSubCategory,
-      soon, // now a string: "yes" or "no"
+      soon,
+      sessions: sessions.toString(),
+      pair,
+      group,
+      pre,
     };
-
 
     const res = await fetch('/api/course', {
       method: 'POST',
@@ -75,12 +90,6 @@ export default function AddCourse() {
     }
   };
 
-
-  useEffect(() => {
-    console.log("soon", soon);
-    
-  }, [soon]);
-
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl mx-auto p-4">
       <h1 className="text-xl font-bold mb-4">Add New Course</h1>
@@ -94,7 +103,7 @@ export default function AddCourse() {
         required
       />
 
-      {/* Level Dropdown */}
+      {/* Level */}
       <label className="block font-bold mb-1">Course Level</label>
       <select
         value={level}
@@ -109,7 +118,7 @@ export default function AddCourse() {
         <option value="advanced">Advanced</option>
       </select>
 
-      {/* Duration Input */}
+      {/* Duration */}
       <div className="flex gap-2 mb-4">
         <input
           type="number"
@@ -134,7 +143,7 @@ export default function AddCourse() {
         </select>
       </div>
 
-      {/* Age From / To Inputs */}
+      {/* Age */}
       <div className="flex gap-2 mb-4">
         <input
           type="number"
@@ -189,7 +198,7 @@ export default function AddCourse() {
         </>
       )}
 
-      {/* Description Editor */}
+      {/* Description */}
       <label className="block font-bold mb-1">Description</label>
       <ReactQuill
         value={description}
@@ -199,6 +208,7 @@ export default function AddCourse() {
         placeholder="Write course description here..."
       />
 
+      {/* Start Soon */}
       <label className="flex items-center gap-2 mb-4">
         <input
           type="checkbox"
@@ -209,7 +219,65 @@ export default function AddCourse() {
         <span className="text-sm font-medium">Start Soon</span>
       </label>
 
+      {/* Sessions */}
+      <input
+        type="number"
+        placeholder="Number of Sessions"
+        value={sessions}
+        onChange={(e) => setSessions(e.target.value)}
+        className="w-full border p-2 mb-4"
+      />
 
+      {/* Pair (from API) */}
+      <label className="block font-bold mb-1">Paired Course</label>
+      <select
+        value={pair}
+        onChange={(e) => setPair(e.target.value)}
+        className="w-full border p-2 mb-4"
+      >
+        <option value="">Select a course</option>
+        {pairCourses.map((course) => (
+          <option key={course.id || course._id} value={course.title}>
+            {course.title}
+          </option>
+        ))}
+      </select>
+
+      {/* Group */}
+      <label className="block font-bold mb-1">Group Type</label>
+      <div className="flex gap-4 mb-4">
+        <label>
+          <input
+            type="radio"
+            name="group"
+            value="In Group"
+            checked={group === 'In Group'}
+            onChange={(e) => setGroup(e.target.value)}
+            className="mr-1"
+          />
+          In Group
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="group"
+            value="1 on 1"
+            checked={group === '1 on 1'}
+            onChange={(e) => setGroup(e.target.value)}
+            className="mr-1"
+          />
+          1 on 1
+        </label>
+      </div>
+
+      {/* Prerequisites */}
+      <input
+        type="text"
+        placeholder="Prerequisites"
+        value={pre}
+        onChange={(e) => setPre(e.target.value)}
+        className="w-full border p-2 mb-4"
+      />
 
       {/* Image Upload */}
       <label className="block font-bold mb-1">Course Image</label>

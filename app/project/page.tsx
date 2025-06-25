@@ -9,28 +9,31 @@ import 'react-quill/dist/quill.snow.css';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const ManageProject = () => {
-  const [formData, setFormData] = useState({
-    title: '',
-    subtitle: '',
-    student: '',
-    age: '',
-    description: '',
-    img: '',
-    video: '',
-    course: '',
-  });
+const [formData, setFormData] = useState({
+  title: '',
+  subtitle: '',
+  student: '',
+  age: '',
+  description: '',
+  img: '',
+  video: '',
+  course: '',
+  game: '', // <-- added here
+});
 
-  const [editFormData, setEditFormData] = useState({
-    id: '',
-    title: '',
-    subtitle: '',
-    student: '',
-    age: '',
-    description: '',
-    img: '',
-    video: '',
-    course: '',
-  });
+const [editFormData, setEditFormData] = useState({
+  id: '',
+  title: '',
+  subtitle: '',
+  student: '',
+  age: '',
+  description: '',
+  img: '',
+  video: '',
+  course: '',
+  game: '', // <-- added here
+});
+
 
   const [message, setMessage] = useState('');
   const [projects, setProjects] = useState([]);
@@ -94,6 +97,7 @@ const ManageProject = () => {
         img: '',
         video: '',
         course: '',
+        game: '',
       });
       window.location.href = '/project';
     } else {
@@ -129,6 +133,7 @@ const ManageProject = () => {
           img: '',
           video: '',
           course: '',
+          game: '',
         });
         window.location.href = '/project';
       } else {
@@ -182,6 +187,16 @@ const ManageProject = () => {
             />
           </div>
         ))}
+
+        <div>
+  <label className="block mb-1">Game link</label>
+  <input
+    type="text"
+    className="border p-2 w-full"
+    value={currentForm.game}
+    onChange={(e) => updateField('game', e.target.value)}
+  />
+</div>
 
         <div>
           <label className="block mb-1">Select Course</label>
