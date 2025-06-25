@@ -111,39 +111,39 @@ export default function CourseTable() {
           </tr>
         </thead>
         <tbody>
-  {filteredCourses.map((c) => (
-    <tr key={c.id}>
-      <td className="border p-2">{c.title}</td>
-      <td className="border p-2">{c.level}</td>
-      <td className="border p-2">
-        {JSON.parse(c.duration).number} {JSON.parse(c.duration).unit}
-      </td>
-      <td className="border p-2">
-        {JSON.parse(c.age).from}–{JSON.parse(c.age).to}
-      </td>
-      <td className="border p-2">
-        <img src={c.img[0]} className="w-24" />
-      </td>
-      <td className="border p-2">{c.category}</td>
-      <td className="border p-2">{c.subcategory}</td>
-      <td className="border p-2">{c.soon}</td>
-      <td className="border p-2">
-        <button
-          onClick={() => handleEdit(c)}
-          className="px-2 py-1 bg-yellow-500 text-white mr-2"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => handleDelete(c.id)}
-          className="px-2 py-1 bg-red-500 text-white"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
+          {filteredCourses.map((c) => (
+            <tr key={c.id}>
+              <td className="border p-2">{c.title}</td>
+              <td className="border p-2">{c.level}</td>
+              <td className="border p-2">
+                {JSON.parse(c.duration).number} {JSON.parse(c.duration).unit}
+              </td>
+              <td className="border p-2">
+                {JSON.parse(c.age).from}–{JSON.parse(c.age).to}
+              </td>
+              <td className="border p-2">
+                <img src={c.img[0]} className="w-24" />
+              </td>
+              <td className="border p-2">{c.category}</td>
+              <td className="border p-2">{c.subcategory}</td>
+              <td className="border p-2">{c.soon}</td>
+              <td className="border p-2">
+                <button
+                  onClick={() => handleEdit(c)}
+                  className="px-2 py-1 bg-yellow-500 text-white mr-2"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(c.id)}
+                  className="px-2 py-1 bg-red-500 text-white"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
 
       </table>
     </div>
@@ -151,7 +151,7 @@ export default function CourseTable() {
 }
 
 
- 
+
 function EditCourseForm({ course, onCancel, onSave }) {
   const [title, setTitle] = useState(course.title || '');
   const [level, setLevel] = useState(formatLevel(course.level));
@@ -178,7 +178,7 @@ function EditCourseForm({ course, onCancel, onSave }) {
       const [cat, sub, pairData] = await Promise.all([
         fetch('/api/category').then(res => res.json()),
         fetch('/api/sub').then(res => res.json()),
-        fetch('/api/products').then(res => res.json()),
+        fetch('/api/course').then(res => res.json()),
       ]);
       setCategories(cat);
       setSubcategories(sub);
@@ -209,6 +209,11 @@ function EditCourseForm({ course, onCancel, onSave }) {
   };
 
   const filteredSub = subcategories.filter(s => s.category === category);
+
+  useEffect(() => {
+    console.log("categories are: ", categories);
+    console.log("category are: ", category);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} className="bg-gray-100 p-4 mb-6 rounded">
@@ -317,7 +322,7 @@ function EditCourseForm({ course, onCancel, onSave }) {
   );
 }
 
- 
+
 
 // Helper functions
 function parseJSON(jsonString) {

@@ -39,7 +39,7 @@ export default function AddCourse() {
       .then(res => res.json())
       .then(setAllSubCategories);
 
-    fetch('/api/products')
+    fetch('/api/course')
       .then(res => res.json())
       .then(setPairCourses);
   }, []);
