@@ -181,6 +181,8 @@ function EditCourseForm({ course, onCancel, onSave }) {
         fetch('/api/course').then(res => res.json()),
       ]);
       setCategories(cat);
+      console.log("cat are: ",cat);
+      
       setSubcategories(sub);
       setPairCourses(pairData);
     };
@@ -214,6 +216,9 @@ function EditCourseForm({ course, onCancel, onSave }) {
     console.log("categories are: ", categories);
     console.log("category are: ", category);
   }, []);
+  useEffect(() => {
+    console.log("d categories are: ", categories); 
+  }, [categories]);
 
   return (
     <form onSubmit={handleSubmit} className="bg-gray-100 p-4 mb-6 rounded">
