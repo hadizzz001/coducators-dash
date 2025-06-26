@@ -15,6 +15,7 @@ export async function PATCH(request, { params }) {
     video       ,
     course       ,
     game       ,
+    level       ,
      
   } = await request.json();
 
@@ -35,6 +36,7 @@ export async function PATCH(request, { params }) {
         video       ,
         course       ,
         game       ,
+        level       ,
       },
     });
 

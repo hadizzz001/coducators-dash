@@ -15,6 +15,7 @@ export async function POST(req) {
       video       ,
       course       ,
       game       ,
+      level       ,
       } = body;
 
 console.log("body are: ",body);
@@ -32,6 +33,7 @@ console.log("body are: ",body);
         video       ,
         course       ,
         game       ,
+        level       ,
       },
     });
 

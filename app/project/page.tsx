@@ -18,7 +18,8 @@ const [formData, setFormData] = useState({
   img: '',
   video: '',
   course: '',
-  game: '', // <-- added here
+  game: '',  
+  level: '',  
 });
 
 const [editFormData, setEditFormData] = useState({
@@ -31,7 +32,8 @@ const [editFormData, setEditFormData] = useState({
   img: '',
   video: '',
   course: '',
-  game: '', // <-- added here
+  game: '',  
+  level: '',  
 });
 
 
@@ -98,6 +100,7 @@ const [editFormData, setEditFormData] = useState({
         video: '',
         course: '',
         game: '',
+        level: '',
       });
       window.location.href = '/project';
     } else {
@@ -134,6 +137,7 @@ const [editFormData, setEditFormData] = useState({
           video: '',
           course: '',
           game: '',
+          level: '',
         });
         window.location.href = '/project';
       } else {
@@ -197,6 +201,23 @@ const [editFormData, setEditFormData] = useState({
     onChange={(e) => updateField('game', e.target.value)}
   />
 </div>
+
+<div>
+  <label className="block mb-1">Project Level</label>
+  <select
+    className="border p-2 w-full"
+    value={currentForm.level}
+    onChange={(e) => updateField('level', e.target.value)}
+    required
+  >
+    <option value="">Select level</option>
+    <option value="beginner">Beginner</option>
+    <option value="intermediate">Intermediate</option>
+    <option value="high intermediate">High Intermediate</option>
+    <option value="advanced">Advanced</option>
+  </select>
+</div>
+
 
         <div>
           <label className="block mb-1">Select Course</label>
