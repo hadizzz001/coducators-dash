@@ -128,6 +128,39 @@ const ManageProject = () => {
       : setFormData({ ...formData, [field]: value });
   };
 
+
+
+
+
+
+const getSortOptions = () => {
+  const total = projects.length;
+  return Array.from({ length: total }, (_, i) => i + 1);
+};
+
+const handleSortChange = async (id, newSort) => {
+  try {
+    const res = await fetch(`/api/blog/${encodeURIComponent(id)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sort: parseInt(newSort, 10) }),
+    });
+
+    if (res.ok) {
+      await fetchProjects(); // Re-fetch to update the UI
+    } else {
+      const errorData = await res.json();
+      console.error('Error:', errorData.error);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+
+
+
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">{editMode ? 'Edit Blog' : 'Add Blog'}</h1>
@@ -170,39 +203,55 @@ const ManageProject = () => {
           <tr>
             <th className="border p-2">Title</th>
             <th className="border p-2">Author</th>
+            <th className="border p-2">Sort</th>
             <th className="border p-2">Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {projects.length > 0 ? (
-            projects.map((project) => (
-              <tr key={project.id}>
-                <td className="border p-2">{project.title}</td>
-                <td className="border p-2">{project.author}</td>
-                <td className="border p-2 text-center">
-                  <button
-                    onClick={() => handleEdit(project)}
-                    className="bg-yellow-500 text-white px-3 py-1 mr-2 rounded"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(project.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={3} className="text-center p-4">
-                No projects found.
-              </td>
-            </tr>
-          )}
-        </tbody>
+<tbody>
+  {projects.length > 0 ? (
+    projects.map((project) => (
+      <tr key={project.id}>
+        <td className="border p-2">{project.title}</td>
+        <td className="border p-2">{project.author}</td>
+        <td className="border p-2">
+          <select
+            value={project.sort}
+            onChange={(e) => handleSortChange(project.id, e.target.value)}
+            className="border px-2 py-1 rounded"
+          >
+            {getSortOptions().map((num) => (
+              <option key={num} value={num}>
+                {num}
+              </option>
+            ))}
+          </select>
+        </td>
+        <td className="border p-2 text-center">
+          <button
+            onClick={() => handleEdit(project)}
+            className="bg-yellow-500 text-white px-3 py-1 mr-2 rounded"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => handleDelete(project.id)}
+            className="bg-red-500 text-white px-3 py-1 rounded"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan={4} className="text-center p-4">
+        No projects found.
+      </td>
+    </tr>
+  )}
+</tbody>
+
+
       </table>
     </div>
   );

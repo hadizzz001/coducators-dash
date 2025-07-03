@@ -16,6 +16,7 @@ model Project {
   age         String
   level       String?
   game        String?
+  skills      String?
   description String
   img         String[]
   video       String[]
@@ -43,6 +44,7 @@ model Blog {
   author      String
   title       String
   description String
+  sort        Int?
   img         String[]
   date        DateTime @default(now()) @db.Date
 }

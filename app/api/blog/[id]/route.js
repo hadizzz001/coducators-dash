@@ -10,6 +10,7 @@ export async function PATCH(request, { params }) {
     title       ,
     description ,
     img         ,
+    sort         ,
      
   } = await request.json();
 
@@ -25,6 +26,7 @@ export async function PATCH(request, { params }) {
         title       ,
         description ,
         img         ,
+        sort         ,
       },
     });
 

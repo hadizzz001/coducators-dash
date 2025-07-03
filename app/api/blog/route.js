@@ -10,6 +10,7 @@ export async function POST(req) {
       title       ,
       description ,
       img         ,
+      sort         ,
       } = body;
 
 console.log("body are: ",body);
@@ -22,6 +23,7 @@ console.log("body are: ",body);
         title       ,
         description ,
         img         ,
+        sort         ,
       },
     });
 

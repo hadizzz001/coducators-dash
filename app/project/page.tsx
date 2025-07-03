@@ -14,6 +14,7 @@ const [formData, setFormData] = useState({
   subtitle: '',
   student: '',
   age: '',
+  skills: '',       // <-- Add this
   description: '',
   img: '',
   video: '',
@@ -22,12 +23,15 @@ const [formData, setFormData] = useState({
   level: '',  
 });
 
+
+
 const [editFormData, setEditFormData] = useState({
   id: '',
   title: '',
   subtitle: '',
   student: '',
   age: '',
+  skills: '',       // <-- Add this
   description: '',
   img: '',
   video: '',
@@ -35,6 +39,7 @@ const [editFormData, setEditFormData] = useState({
   game: '',  
   level: '',  
 });
+
 
 
   const [message, setMessage] = useState('');
@@ -82,6 +87,11 @@ const [editFormData, setEditFormData] = useState({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+      if (!formData.video) {
+    setMessage('Error: Video upload is required.');
+    return;
+  }
+  
     const res = await fetch('/api/project', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -101,6 +111,7 @@ const [editFormData, setEditFormData] = useState({
         course: '',
         game: '',
         level: '',
+        skills: '',
       });
       window.location.href = '/project';
     } else {
@@ -138,6 +149,7 @@ const [editFormData, setEditFormData] = useState({
           course: '',
           game: '',
           level: '',
+          skills: '',
         });
         window.location.href = '/project';
       } else {
@@ -235,6 +247,19 @@ const [editFormData, setEditFormData] = useState({
             ))}
           </select>
         </div>
+
+
+<div>
+  <label className="block mb-1">Skills</label>
+  <input
+    type="text"
+    className="border p-2 w-full"
+    value={currentForm.skills}
+    onChange={(e) => updateField('skills', e.target.value)}
+    placeholder="e.g., JavaScript, React, CSS"
+  />
+</div>
+
 
 
 

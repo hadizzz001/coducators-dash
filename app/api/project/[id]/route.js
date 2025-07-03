@@ -16,6 +16,7 @@ export async function PATCH(request, { params }) {
     course       ,
     game       ,
     level       ,
+    skills       ,
      
   } = await request.json();
 
@@ -37,6 +38,7 @@ export async function PATCH(request, { params }) {
         course       ,
         game       ,
         level       ,
+        skills       ,
       },
     });
 
